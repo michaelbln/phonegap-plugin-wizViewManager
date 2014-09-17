@@ -30,6 +30,8 @@
  **/
 - (void)createView:(CDVInvokedUrlCommand *)command;
 - (void)hideView:(CDVInvokedUrlCommand *)command;
+- (void)goBack:(CDVInvokedUrlCommand *)command;
+- (void)goForward:(CDVInvokedUrlCommand *)command;
 - (void)showView:(CDVInvokedUrlCommand *)command;
 - (void)load:(CDVInvokedUrlCommand *)command;
 - (void)removeView:(CDVInvokedUrlCommand *)command;

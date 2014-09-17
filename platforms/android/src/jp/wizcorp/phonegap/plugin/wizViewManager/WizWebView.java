@@ -144,6 +144,10 @@ public class WizWebView extends WebView  {
                             // Log.d("WizWebView", "[wizMessage] targetView ****** is " + msgData[1] + " -> " + targetView + " with data -> " + data2send);
                             targetView.loadUrl("javascript:wizViewMessenger.__triggerMessageEvent(\"" + msgData[0] + "\", \"" + msgData[1] + "\", \"" + data2send + "\", \"" + msgData[3] + "\");");
 
+                          Integer cgb = targetView.canGoBack()? 1 : 0;
+                          Integer cgf = targetView.canGoForward()? 1 : 0;
+                          String jsMsg = "{navinfo : {canGoBack : " + cgb.toString() + ", canGoForward : " + cgf.toString() +" }}";
+                          targetView.loadUrl("javascript:wizViewMessenger.postMessage(" + jsMsg + ",'mainView')");
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -547,4 +551,5 @@ public class WizWebView extends WebView  {
         }
     }
 }
+
 

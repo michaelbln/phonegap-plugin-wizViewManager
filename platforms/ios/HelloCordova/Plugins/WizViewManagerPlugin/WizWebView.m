@@ -294,7 +294,8 @@ static CDVPlugin *viewManager;
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSMutableURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    
+    NSLog(@"Should start load with request triggered");
+
     NSString *requestString = [[request URL] absoluteString];
     // get prefix
     NSArray *prefixer = [requestString componentsSeparatedByString:@":"];
@@ -339,6 +340,11 @@ static CDVPlugin *viewManager;
         
  	}
     
+    NSNumber *cgb = [NSNumber numberWithBool:[wizView canGoBack]];
+    NSNumber *cgf = [NSNumber numberWithBool:[wizView canGoForward]];
+    
+    NSString *jsMsg = [NSString stringWithFormat:@"window.wizViewMessenger.postMessage({navinfo : {canGoBack : %@,canGoForward : %@}}, 'mainView')",cgb,cgf];
+    [wizView stringByEvaluatingJavaScriptFromString:jsMsg];
     // Accept any other URLs
 	return YES;
 }

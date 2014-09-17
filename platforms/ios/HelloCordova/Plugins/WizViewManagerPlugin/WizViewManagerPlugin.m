@@ -401,6 +401,46 @@ static WizViewManagerPlugin *wizViewManagerInstance = NULL;
     }
 }
 
+- (void)goForward:(CDVInvokedUrlCommand *)command {
+    NSString *viewName = [command.arguments objectAtIndex:0];
+    
+    if ([wizViewList objectForKey:viewName]) {
+        
+        UIWebView *targetWebView = [wizViewList objectForKey:viewName];
+        [targetWebView goForward];
+        CDVPluginResult *pluginResultOK = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self writeJavascript: [pluginResultOK toSuccessCallbackString:self.hideViewCallbackId]];
+    }
+    else {
+        // View not found
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:
+                                         [self throwError:1 description:@"View not found"]];
+        [self writeJavascript: [pluginResult toErrorCallbackString:command.callbackId]];
+        return;
+    }
+}
+
+- (void)goBack:(CDVInvokedUrlCommand *)command {
+    NSLog(@"Going back requested");
+    NSString *viewName = [command.arguments objectAtIndex:0];
+    
+    if ([wizViewList objectForKey:viewName]) {
+        NSLog(@"Ok, let's come back");
+        UIWebView *targetWebView = [wizViewList objectForKey:viewName];
+        [targetWebView goBack];
+        
+        CDVPluginResult *pluginResultOK = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self writeJavascript: [pluginResultOK toSuccessCallbackString:self.hideViewCallbackId]];
+    }
+    else {
+        NSLog(@"Sorry, can't come back");
+        // View not found
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:
+                                         [self throwError:1 description:@"View not found"]];
+        [self writeJavascript: [pluginResult toErrorCallbackString:command.callbackId]];
+        return;
+    }
+}
 - (void)showView:(CDVInvokedUrlCommand *)command {
     
     NSString *viewName = [command.arguments objectAtIndex:0];
